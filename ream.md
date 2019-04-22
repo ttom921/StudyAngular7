@@ -189,3 +189,132 @@ export class OperationModule { }
 
 但是別忘了**OperationModule**目前還是居無定所，沒有被註冊到任何模組內。
 
+#### 情境A
+
+假設我們希望**app.component.html**能夠加入**Op1Component**的功能，正常流程先在`app-routing.module.ts`增加**Op1Component**的路由規則, ==path==屬性設定為==opt1==
+
+```typescript
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { Page1Component } from './page1/page1.component';
+import { Page2Component } from './page2/page2.component';
+import { Page3Component } from './page3/page3.component';
+import { Page404Component } from './page404/page404.component';
+import { Op1Component } from './operation/op1/op1.component';
+
+const routes: Routes = [
+  {path:'',children:[]},
+  {path:'p1',component:Page1Component},
+  {path:'p2',component:Page2Component},
+  {path:'p3',component:Page3Component},
+  {path:'op1',component:Op1Component},
+  {path:'404',component:Page404Component},
+  {path:'**',redirectTo:'404'}
+  //{path:'**',redirectTo:''}
+  //{path:'**',component:Page404Component}
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+```
+
+再將 `app.component.html` 樣板插入一個 **Opt1Component** 的連結。
+
+```html
+<a routerLink="/p1" >Page1</a>
+<button routerLink="/p2" >Page2</button>
+<span routerLink="/p3" >Page3</span>
+<a routerLink="/op1">Option 1</a>
+<hr/>
+<router-outlet></router-outlet>
+```
+
+執行後會出現Angular不認得**Opt1Component** 的警告
+
+![2019-04-22_16_32_48](/pic/2019-04-22_16_32_48_Image.jpg)
+
+再來我們將**Op1Component**所屬的模組(**OperationModule**)給註冊到**AppModule**內，重新執行就正常
+
+```typescript
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { Page1Component } from './page1/page1.component';
+import { Page2Component } from './page2/page2.component';
+import { Page3Component } from './page3/page3.component';
+import { Page404Component } from './page404/page404.component';
+import { OperationModule } from './operation/operation.module';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    Page1Component,
+    Page2Component,
+    Page3Component,
+    Page404Component
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    OperationModule //<!--加入模組
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+```
+
+#### 情境B
+
+假設**Page1Component**需要使用到**Op1Component**, 所以正常方式是將**Op1Component**的tag(`app-opt1`)加到`src\app\page1\page1.component.html`內執行結果，會發現Angular不認得`app-opt1`這個tag
+
+![2019-04-22_16_45_32](/pic/2019-04-22_16_45_32_Image.jpg)
+
+雖然**OperaionModule**已經註冊到**AppModule**內，但是透過Component tag方式來引用時仍然會出現錯誤。
+
+現在我們需要使用到**NgModule**的另一個屬性**exports**,打開`src\app\operation\operation.module.ts`將**Opt1Component**設定到**OperationModule**的**exports**
+
+```typescript
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Op1Component } from './op1/op1.component';
+import { Op2Component } from './op2/op2.component';
+import { Op3Component } from './op3/op3.component';
+
+@NgModule({
+  declarations: [Op1Component, Op2Component, Op3Component],
+  imports: [
+    CommonModule
+  ],
+  exports: [
+    Op1Component,
+    Op2Component,
+    Op3Component
+  ]
+})
+export class OperationModule { }
+```
+
+這樣執行就正常
+
+> **NgModul**e的`imports`提供了匯入功能，讓我們將要使用的元件匯入到此模組內，而`exports`則提供匯出功能，讓別的模組可以知道此模組提供什麼元件，所以正常要`exports`的元件也一定要先匯入連來，因無是元綿所以匯入是加到`declarations`屬性內。
+
+再將`src\styles.scss`加入`p` tag的樣式，重新瀏覽網頁可以到**Op1Component**的樣板確實被包覆在**Page1Compoenet**樣板內
+
+```scss
+/* You can add global styles to this file, and also import other style files */
+p {
+    border-color: red;
+    border-style: dashed;
+    border-width: 1px;
+    margin: 8px;
+}
+```
+

@@ -8,6 +8,11 @@ import { Op3Component } from './op3/op3.component';
   declarations: [Op1Component, Op2Component, Op3Component],
   imports: [
     CommonModule
+  ],
+  exports: [
+    Op1Component,
+    Op2Component,
+    Op3Component
   ]
 })
 export class OperationModule { }
