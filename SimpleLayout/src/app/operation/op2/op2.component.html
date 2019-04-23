@@ -1,4 +1,17 @@
 <p>
   這是模組2
 </p>
-<div style="background-color:blueviolet;height: 50px;" ></div>
+<div style="background-color:blueviolet;height: 50px;"></div>
+
+<!-- <video id="my-video" class="<video></video>-js" width="360" height="240" data-setup='{ "autoplay": true, "controls": true, "poster": "", "preload": "auto" }'>
+  	<source src="https://www.sample-videos.com/video123/mp4/480/big_buck_bunny_480p_30mb.mp4" type='video/mp4'>
+  	<p class="vjs-no-js">
+  		 如果使用者不支援JavaScript，顯示這段
+  		To view this video please enable JavaScript, and consider upgrading to a web browser that
+  		<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+  	</p>
+  </video> -->
+
+<video #myvid class="video-js vjs-big-play-centered mini-play" width="640" height="360" style="margin: auto;">
+  <source [src]="videoURL" type="video/mp4">
+</video>

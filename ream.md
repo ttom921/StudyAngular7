@@ -1031,3 +1031,107 @@ export class HomeRoutingModule { }
 
 ```
 
+### 將移除用不到的元件PageXComponent
+
+直接刪除模組，再將把註冊相關元件的模組`src\app\app.module.ts`, `src\app\app-routing.module.ts`移除
+
+```typescript
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { Page404Component } from './page404/page404.component';
+import { CustomMaterialModule } from './custom-material.module'
+import { HomeModule } from './home/home.module';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    Page404Component
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    CustomMaterialModule,
+    HomeModule // <- 加入homemodule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+```
+
+
+
+```typescript
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { Page404Component } from './page404/page404.component';
+import { HomeComponent } from './home/home.component';
+
+const routes: Routes = [
+  {path:'',redirectTo:'home',pathMatch:'full'},
+  {path:'404',component:Page404Component}
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+```
+
+#### 顯示op1,op2,op1和op2
+
+在`src\app\home\home.module.ts`中加入**OperationModule**
+
+```typescript
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { HomeRoutingModule } from './home-routing.module';
+import { HomeComponent } from './home.component';
+import { HeaderComponent } from './header/header.component';
+import { AsideComponent } from './aside/aside.component';
+import { CustomMaterialModule } from '../custom-material.module';
+import { Showvideo1Component } from './showvideo1/showvideo1.component';
+import { Showvideo2Component } from './showvideo2/showvideo2.component';
+import { Showvideo3Component } from './showvideo3/showvideo3.component';
+import { OperationModule } from '../operation/operation.module';
+
+
+@NgModule({
+  declarations: [HomeComponent, HeaderComponent, AsideComponent, Showvideo1Component, Showvideo2Component, Showvideo3Component],
+  imports: [
+    CommonModule,
+    HomeRoutingModule,
+    CustomMaterialModule,
+    OperationModule
+  ]
+})
+export class HomeModule { }
+
+```
+
+在`src\app\home\showvideo1\showvideo1.component.html`,`src\app\home\showvideo2\showvideo2.component.html`,`src\app\home\showvideo3\showvideo3.component.html`各加入`app-op1`,`app-op2`,`app-op3`
+
+```html
+<app-op1></app-op1>
+```
+
+```html
+<app-op2></app-op2>
+```
+
+```html
+<app-op1></app-op1>
+<app-op2></app-op2>
+```
+
+
+
