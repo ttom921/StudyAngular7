@@ -318,3 +318,207 @@ p {
 }
 ```
 
+### Angular Material
+
+安裝Angular Material
+
+```
+npm install --save @angular/material @angular/cdk @angular/animations
+```
+
+將動畫模組(**BrowserAnimationsModule**)註冊到專案的啟動模組(**AppModule**)內
+
+```typescript
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+
+
+
+@NgModule({
+  // ...
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,// <- 加入動畫模組
+    OperationModule 
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+```
+
+#### 匯入要使用的元件模組
+
+說成**元件模組**是因為**Angular Material**特別將每個元件(Component)都用一個獨立的模組(NgModule)包覆起來，這樣就不會連沒使用的元件都一起打包到專案內，造成編譯後的檔案太大。
+
+因為目前還沒決定要使用那些元件，所以暫時不先加入，後面有使用時再說明， 但是官方提出一個很好的元件執行下面安裝指入建立一個**CustomMaterialModule**帶上--flat參數讓CLI不要建立資料夾，因為不確定那些模組會使用，所以我們將檔案放置在最蛉層`src\app`底下。
+
+```
+ng g m customMaterial --flat
+```
+
+> 官方文件下方特別提到元件模組需加入在**BrowserModule**之後，也就是使用時除了要註冊到棤組的`imports`屬性，如果`imports`屬性包含**BrowserModule**時需要將**CustomaMaterialModule**放置在它的後面。
+>
+> 由此可說明`imports`屬性具有順序性，它會依序處理。
+
+#### 匯人樣式
+
+依官方文件將下列語法加到src\styles.scss內。
+
+`@import "~@angular/material/prebuilt-themes/indigo-pink.css";`
+
+不過我們從此路徑去搜尋就會發現，**Angular Material**總共提供了下列幾種配色的樣式：
+**deeppurple-amber.css**
+**indigo-pink.css**
+**pink-bluegrey.css**
+**purple-green.css**
+
+打開src\styles.scee，將所有樣式都先加入，對選擇一個，剩餘的都先註解起來。
+
+```typescript
+/* You can add global styles to this file, and also import other style files */
+/* Angular Material2 Themes */
+// @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+// @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~@angular/material/prebuilt-themes/pink-bluegrey.css";
+// @import "~@angular/material/prebuilt-themes/purple-green.css";
+p {
+    border-color: red;
+    border-style: dashed;
+    border-width: 1px;
+    margin: 8px;
+}
+```
+
+#### 安裝手勢操作的𡘷件HammerJS
+
+因為有一些元件會用到此程式函
+
+```
+npm install --save hammerjs
+```
+
+將`hammerjs` import 到程式的**進入點**(entry point),我們將下列語法加入到`src\main.ts`。
+
+```typescript
+import 'hammerjs'
+```
+
+```typescript
+import { enableProdMode } from '@angular/core';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+
+import { AppModule } from './app/app.module';
+import { environment } from './environments/environment';
+import 'hammerjs'
+if (environment.production) {
+  enableProdMode();
+}
+
+platformBrowserDynamic().bootstrapModule(AppModule)
+  .catch(err => console.error(err));
+
+```
+
+#### (選擇性)安裝圖示套件Material Icons
+
+**Angular Material**的圖示元件為`mat-icon`,我們在首頁(`src\index.html`)加入下面連結。
+
+```html
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+```
+
+#### 測試
+
+開啟 <https://material.angular.io/components> 頁面可以看到網頁展示了 **Angular Material** 元件效果，同時也提供設定與使用說明。
+
+以`mat-icon`為例(在**Buttons & Indicators**下面)選擇`Icon元件頁籤`，點選內容的`API`內容，可以看到該模組名稱為**MatIconModule**，打開`src\app\custom-material.module.ts`並將**MatIconModule**加到`imports`以及`exports`屬性內。
+
+```typescript
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {MatIconModule} from '@angular/material/icon';
+
+@NgModule({
+  declarations: [],
+  imports: [
+    CommonModule,
+    MatIconModule
+  ],
+  exports:[
+    MatIconModule
+  ]
+})
+export class CustomMaterialModule { }
+
+```
+
+
+
+##### 嘗試在Page1Component放戶一些圖示
+
+因為**Page1Component**使用**CustomMaterialModule**內的**MatIconModule**,所以必須將**CustomMaterialModule**註冊到**Page1Component**所屬的模組(**Appmodule**), 開啟並編輯`src\app\app.module.ts`
+
+```typescript
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { Page1Component } from './page1/page1.component';
+import { Page2Component } from './page2/page2.component';
+import { Page3Component } from './page3/page3.component';
+import { Page404Component } from './page404/page404.component';
+import { OperationModule } from './operation/operation.module';
+import {CustomMaterialModule} from './custom-material.module'
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    Page1Component,
+    Page2Component,
+    Page3Component,
+    Page404Component
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    CustomMaterialModule,// <- 加入圖示
+    OperationModule 
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+```
+
+在`src\app\page1\page1.component.html`內加入一些圖示
+
+```html
+<p>
+  page1 works!
+  <app-op1></app-op1>
+</p>
+<mat-icon>home</mat-icon>
+<mat-icon>done</mat-icon>
+<mat-icon>delete</mat-icon>
+<mat-icon>email</mat-icon>
+
+```
+
+> 圖示及其名稱可參閱 <https://material.io/icons/> 查詢
+
+### Angular Flex-Layout
+
+安裝Angular Flex-Layout
+
+```
+npm install --save @angular/flex-layout@latest
+```
+
