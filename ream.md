@@ -522,3 +522,244 @@ export class AppModule { }
 npm install --save @angular/flex-layout@latest
 ```
 
+將FlexLayoutModule加到src\app\custom-material.module.ts，要使用時只要將CustomMaterialModule加到對應的模組內就可以直接使用。
+
+```typescript
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatIconModule } from '@angular/material/icon';
+
+@NgModule({
+  declarations: [],
+  imports: [
+    CommonModule,
+    FlexLayoutModule,
+    MatIconModule
+  ],
+  exports: [
+    FlexLayoutModule,
+    MatIconModule
+  ]
+})
+export class CustomMaterialModule { }
+
+```
+
+#### 建立網站框架
+
+一般大部分功能性網站都會有如下圖一般，上方會有**header**區塊，側邊會有**aside**區塊，剩下最大區域研是呈現內容的**content**
+
+![2019-04-23_11_14_46](/pic/2019-04-23_11_14_46_Image.jpg)
+
+修改src\styles.scee，將p的樣式拿掉，避免影響。
+
+```scss
+/* You can add global styles to this file, and also import other style files */
+/* Angular Material2 Themes */
+// @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+// @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~@angular/material/prebuilt-themes/pink-bluegrey.css";
+// @import "~@angular/material/prebuilt-themes/purple-green.css";
+// p {
+//     border: 1px dashed red;
+//     margin: 8px;
+// }
+```
+
+#### 建立獨立模組與元件
+
+建立一個**HomeModule**模組，指令如下
+
+```
+ng g m home --routing
+```
+
+> `--routing`:跟`ng new` 一樣，此參睥會建立一個路由模組**HomeRoutingModule**，後續會在說明
+>
+> 
+
+在**HomeModule**下分別建立**HomeCompoenet**，**HeaderComponent**，**AsideComponent**其中**HomeComponent**不要建立資料夾指令如下：
+
+```
+ng g c home\home --flat
+ng g c home\header
+ng g c home\aside
+```
+
+![2019-04-23_11_35_21](/pic/2019-04-23_11_35_21_Image.jpg)
+
+將**HomeModule**註冊到**AppModule**。
+
+```typescript
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { Page1Component } from './page1/page1.component';
+import { Page2Component } from './page2/page2.component';
+import { Page3Component } from './page3/page3.component';
+import { Page404Component } from './page404/page404.component';
+import { OperationModule } from './operation/operation.module';
+import {CustomMaterialModule} from './custom-material.module'
+import { HomeModule } from './home/home.module';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    Page1Component,
+    Page2Component,
+    Page3Component,
+    Page404Component
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    CustomMaterialModule,
+    OperationModule,
+    HomeModule // <- 加入homemodule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+```
+
+修改`src\app\app-routing.module.ts`加入路由規則`home`對應到**HomeComponent**，並將空白的路由規則導到`home`路徑。
+
+```typescript
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { Page1Component } from './page1/page1.component';
+import { Page2Component } from './page2/page2.component';
+import { Page3Component } from './page3/page3.component';
+import { Page404Component } from './page404/page404.component';
+import { Op1Component } from './operation/op1/op1.component';
+import { HomeComponent } from './home/home.component';
+
+const routes: Routes = [
+  //{path:'',children:[]},
+  {path:'',redirectTo:'home',pathMatch:'full'},
+  {path:'home',component:HomeComponent},
+  {path:'p1',component:Page1Component},
+  {path:'p2',component:Page2Component},
+  {path:'p3',component:Page3Component},
+  {path:'op1',component:Op1Component},
+  {path:'404',component:Page404Component},
+  {path:'**',redirectTo:'404'}
+  //{path:'**',redirectTo:''}
+  //{path:'**',component:Page404Component}
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+```
+
+> `pathMatch`:表示路由規則比對模式，`full`表示須完全相同。
+>
+> 正常情況下如果路由規則是重新導向(**redirectTo**),都會加上`pathMath: 'full'`的參數，萬用路由因為為法明確比對，所以可以下加，最簡單的方式就是一律加上去。
+
+修改`src\app\app.component.html`，只保留路由插座(**router-outlet**)
+
+執行測試，會發現http://localhost:4200/ 會自動引導到 http://localhost:4200/home 整個頁面只會出現**HeaderCompoenet**的樣板
+
+#### 切板
+
+因為會使用到**Angular Flex-Layout** 所以將**CustomMaterialModule** 註冊到**HomeModule**(`src\app\home\home.module.ts`)內。
+
+```typescript
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { HomeRoutingModule } from './home-routing.module';
+import { HomeComponent } from './home.component';
+import { HeaderComponent } from './header/header.component';
+import { AsideComponent } from './aside/aside.component';
+import { CustomMaterialModule } from '../custom-material.module';
+
+@NgModule({
+  declarations: [HomeComponent, HeaderComponent, AsideComponent],
+  imports: [
+    CommonModule,
+    HomeRoutingModule,
+    CustomMaterialModule
+  ]
+})
+export class HomeModule { }
+
+```
+
+修改`src\styles.scss`,將`html`,`body` tag高度設為100％，並取消邊界。
+
+```scss
+html,body{
+    height: 100%;
+    margin: 0px;
+}
+/* Angular Material2 Themes */
+// @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+// @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~@angular/material/prebuilt-themes/pink-bluegrey.css";
+```
+
+修改`src\app\home\home.component.html`,將其切成3個區塊，並在樣式檔`src\app\home\home.component.scss`內加入背景顏色以檢視版面是否正常。
+
+```scss
+.layout{
+    background: black;
+    .header{
+        background: blue;
+    }
+    .main{
+        background: gray;
+        .aside {
+            background: green;
+        }
+        .content{
+            background: orange;
+        }
+    }
+}
+```
+
+```html
+<div fxFill fxLayout="column" class="layout">
+  <div fxFlex="68px" class="header">Header</div>
+  <div fxFlex fxlayout="row" class="main">
+    <div fxFlex="200px" class="aside">Aside</div>
+    <div fxFlex class="content">Content</div>
+  </div>
+</div>
+```
+
+> `fxFill`: `fxFlexFill`的縮寫，表示填滿區域
+>
+> `fxLayout`:內容項目排列方式，`row`表非頗先以水平排列，colunm表示先以垂直排列。
+> `fxFlex`: 有值時會以該值作為設定，無值時表示會佔用剩餘空間，其值會受到父元素`fxLayout`屬性影響，當父元素為水平優先排列(`fxLayout='row'`),fxFlex會影響目前元素寬度(`width`);當父元素為埀值優先排列時(`fxLayout='colum'`),fxFlex會影響目前的高度(`height`)。
+
+最後再將**HeaderComponent**的tag-app-header與**AsideComponent**的tag-app-aside加入到home.component.html
+
+```html
+<div fxFill fxLayout="column" class="layout">
+  <div fxFlex="68px" class="header">
+      <app-header></app-header>
+  </div>
+  <div fxFlex fxlayout="row" class="main">
+    <div fxFlex="200px" class="aside">
+        <app-aside></app-aside>
+    </div>
+    <div fxFlex class="content">Content
+    </div>
+  </div>
+</div>
+
+```
+

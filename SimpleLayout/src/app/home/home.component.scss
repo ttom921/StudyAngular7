@@ -1,0 +1,15 @@
+.layout{
+    background: black;
+    .header{
+        background: blue;
+    }
+    .main{
+        background: gray;
+        .aside {
+            background: green;
+        }
+        .content{
+            background: orange;
+        }
+    }
+}

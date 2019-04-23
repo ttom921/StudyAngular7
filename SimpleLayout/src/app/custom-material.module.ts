@@ -1,14 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {MatIconModule} from '@angular/material/icon';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
+    FlexLayoutModule,
     MatIconModule
   ],
-  exports:[
+  exports: [
+    FlexLayoutModule,
     MatIconModule
   ]
 })

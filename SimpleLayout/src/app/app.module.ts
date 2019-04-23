@@ -10,6 +10,7 @@ import { Page3Component } from './page3/page3.component';
 import { Page404Component } from './page404/page404.component';
 import { OperationModule } from './operation/operation.module';
 import {CustomMaterialModule} from './custom-material.module'
+import { HomeModule } from './home/home.module';
 
 @NgModule({
   declarations: [
@@ -23,8 +24,9 @@ import {CustomMaterialModule} from './custom-material.module'
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    CustomMaterialModule,// <- 加入圖示
-    OperationModule 
+    CustomMaterialModule,
+    OperationModule,
+    HomeModule // <- 加入homemodule
   ],
   providers: [],
   bootstrap: [AppComponent]

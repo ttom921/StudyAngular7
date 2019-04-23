@@ -1,10 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+html,body{
+    height: 100%;
+    margin: 0px;
+}
 /* Angular Material2 Themes */
 // @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
 // @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~@angular/material/prebuilt-themes/pink-bluegrey.css";
 // @import "~@angular/material/prebuilt-themes/purple-green.css";
-p {
-    border: 1px dashed red;
-    margin: 8px;
-}
+// p {
+//     border: 1px dashed red;
+//     margin: 8px;
+// }

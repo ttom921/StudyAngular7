@@ -5,9 +5,12 @@ import { Page2Component } from './page2/page2.component';
 import { Page3Component } from './page3/page3.component';
 import { Page404Component } from './page404/page404.component';
 import { Op1Component } from './operation/op1/op1.component';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
-  {path:'',children:[]},
+  //{path:'',children:[]},
+  {path:'',redirectTo:'home',pathMatch:'full'},
+  {path:'home',component:HomeComponent},
   {path:'p1',component:Page1Component},
   {path:'p2',component:Page2Component},
   {path:'p3',component:Page3Component},
