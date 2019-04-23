@@ -763,3 +763,105 @@ html,body{
 
 ```
 
+### 子路由(Child Routing)
+
+在上面我們使用**Angular FlexLayout**來建立的基本版面，也順便建立了**HomeModule**，使用指令`ng g m home --routing`,因為多加了`--routing`參數，所以CLI多幫我們建立一個路由模組`home-routing.module.ts`。
+
+```typescript
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
+const routes: Routes = [];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class HomeRoutingModule { }
+```
+
+比較一下 src\app\app-routing.modult.ts
+
+```typescript
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { Page1Component } from './page1/page1.component';
+import { Page2Component } from './page2/page2.component';
+import { Page3Component } from './page3/page3.component';
+import { Page404Component } from './page404/page404.component';
+import { Op1Component } from './operation/op1/op1.component';
+import { HomeComponent } from './home/home.component';
+
+const routes: Routes = [
+  //{path:'',children:[]},
+  {path:'',redirectTo:'home',pathMatch:'full'},
+  {path:'home',component:HomeComponent},
+  {path:'p1',component:Page1Component},
+  {path:'p2',component:Page2Component},
+  {path:'p3',component:Page3Component},
+  {path:'op1',component:Op1Component},
+  {path:'404',component:Page404Component},
+  {path:'**',redirectTo:'404'}
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+```
+
+可以發現**AppRoutingModule**是透過`RouterModule.forRoot(routes)`匯入，而**HomeRoutingModule**是透過`RouterModule.forChild(routes)`匯入，Angular在執行時只有一個根路當作起點，相關其它路由會以子路由的身分附加到根路由內。
+
+**HomeRoutingModule**因為先被匯入到**HomeModule**，而**HomeModule**又被匯入到**AppModule**，所以**HomeRoutingModule**的路由規則才會被偵測到。
+
+嘗式把**AppModule**內的路由規則 `{path:'home',component:HomeComponent}`移至**HomeRoutingModule**，並取消萬用路規則。
+
+```typescript
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { Page1Component } from './page1/page1.component';
+import { Page2Component } from './page2/page2.component';
+import { Page3Component } from './page3/page3.component';
+import { Page404Component } from './page404/page404.component';
+import { Op1Component } from './operation/op1/op1.component';
+import { HomeComponent } from './home/home.component';
+
+const routes: Routes = [
+  {path:'',redirectTo:'home',pathMatch:'full'},
+  //{path:'home',component:HomeComponent},
+  {path:'p1',component:Page1Component},
+  {path:'p2',component:Page2Component},
+  {path:'p3',component:Page3Component},
+  {path:'op1',component:Op1Component},
+  {path:'404',component:Page404Component}
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+```
+
+```typescript
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { HomeComponent } from './home.component';
+
+const routes: Routes = [
+  { path: 'home', component: HomeComponent }
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class HomeRoutingModule { }
+
+```
+
+執行後會看到結果沒有任何改變，這意味Angular會幫我們將所有路由合併，並依序比對路由規則，所以也表示子路由由加入的順序也會影響比對結果，只是正常情況下路由規格的條件(`path`屬性)不應重複
+
+> 因為目前的路由模組是透過Angular幫我們整合，正常情況下它會以根路由為主，在依子路模組加入的順序依次加進去，所以如果根路由包含了萬用路由的規則，那路由規則比對時可能會在此被攔載，後續路由規則可能就會不在比對。
