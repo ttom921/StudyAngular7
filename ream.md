@@ -865,3 +865,169 @@ export class HomeRoutingModule { }
 執行後會看到結果沒有任何改變，這意味Angular會幫我們將所有路由合併，並依序比對路由規則，所以也表示子路由由加入的順序也會影響比對結果，只是正常情況下路由規格的條件(`path`屬性)不應重複
 
 > 因為目前的路由模組是透過Angular幫我們整合，正常情況下它會以根路由為主，在依子路模組加入的順序依次加進去，所以如果根路由包含了萬用路由的規則，那路由規則比對時可能會在此被攔載，後續路由規則可能就會不在比對。
+
+### 功能選單
+
+先在**Aside**區塊加入一些功能項目，因為會使用到**MatListModule**,**MatButtonModule**,**MatIconModule**,所以打開`src\app\custom-material.module.ts`將缺少的模組補上。
+
+```typescript
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule} from '@angular/material/list';
+import {MatButtonModule} from '@angular/material/button';
+
+@NgModule({
+  declarations: [],
+  imports: [
+    CommonModule,
+    FlexLayoutModule,
+    MatIconModule
+  ],
+  exports: [
+    FlexLayoutModule,
+    MatIconModule,
+    MatListModule,
+    MatButtonModule
+  ]
+})
+export class CustomMaterialModule { }
+```
+
+打開`src\app\home\aside\aside.component.html`,並加入下列功能清單
+
+```html
+<mat-list>
+  <h3 matSubheader>圖片列表</h3>
+  <button mat-button routerLink="" style="height: 150px">
+    <mat-list-item>
+      <img src="https://via.placeholder.com/150/?text=video1" />
+    </mat-list-item>
+  </button>
+  <button mat-button routerLink="" style="height: 150px">
+    <mat-list-item>
+      <img src="https://via.placeholder.com/150/?text=video2" />
+    </mat-list-item>
+  </button>
+  <button mat-button routerLink="" style="height: 150px">
+      <mat-list-item>
+        <img src="https://via.placeholder.com/150/?text=video1+video2" />
+      </mat-list-item>
+    </button>
+</mat-list>
+```
+
+接下來我們需要是點選功能選單Content區塊會切換成該選單的介面，因為外面的**HomeModule**樣板會被保留下來，只有Content區塊需要切換。
+
+依序建立各功能對應的元件
+
+```
+ng g c home\showvideo1
+ng g c home\showvideo2
+ng g c home\showvideo3
+```
+
+打開`src\app\home\home.component.html`,在Content區塊內插入第二層的`router-outlet`
+
+```html
+<div fxFill fxLayout="column" class="layout">
+  <div fxFlex="68px" class="header">
+      <app-header></app-header>
+  </div>
+  <div fxFlex fxlayout="row" class="main">
+    <div fxFlex="200px" class="aside">
+        <app-aside></app-aside>
+    </div>
+    <div fxFlex class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+
+```
+
+開啟`src\app\home\home-routing.module.ts`,依照剛才所產生的元件建立對應的路由規則，比較不同的是這次的路由規則是邁立在`home`這個路由規則的`children`屬性內。
+
+```typescript
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { HomeComponent } from './home.component';
+import { Showvideo1Component } from './showvideo1/showvideo1.component';
+import { Showvideo2Component } from './showvideo2/showvideo2.component';
+import { Showvideo3Component } from './showvideo3/showvideo3.component';
+
+const routes: Routes = [
+  {
+    path: 'home', component: HomeComponent, children: [
+      {path:'showvideo1',component:Showvideo1Component},
+      {path:'showvideo2',component:Showvideo2Component},
+      {path:'showvideo3',component:Showvideo3Component}
+    ]
+  }
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class HomeRoutingModule { }
+
+```
+
+> 符合現在所設的路由規則的導覽路徑前面必含home路徑，因為必須先滿足`path:'home'`這條路由規則才有機會繼續比對`children`內的路由規則。
+>
+> `children`內的路由規則也是可以再加上子路由規則(`children`)，如此可以一層一層的延伸下去。
+
+打開`src\app\home\aside\aside.component.html`並在各功能選單加入`routerLink`
+
+```html
+<mat-list>
+  <h3 matSubheader>圖片列表</h3>
+  <button mat-button routerLink="./showvideo1" style="height: 150px">
+    <mat-list-item>
+      <img src="https://via.placeholder.com/150/?text=video1" />
+    </mat-list-item>
+  </button>
+  <button mat-button routerLink="./showvideo2" style="height: 150px">
+    <mat-list-item>
+      <img src="https://via.placeholder.com/150/?text=video2" />
+    </mat-list-item>
+  </button>
+  <button mat-button routerLink="./showvideo3" style="height: 150px">
+      <mat-list-item>
+        <img src="https://via.placeholder.com/150/?text=video1+video2" />
+      </mat-list-item>
+    </button>
+</mat-list>
+```
+
+不過在預設情況下Content區塊會是空日，因此可以設定某功能為預設功能，我們以showvide1當作預設功能為例。
+
+```typescript
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { HomeComponent } from './home.component';
+import { Showvideo1Component } from './showvideo1/showvideo1.component';
+import { Showvideo2Component } from './showvideo2/showvideo2.component';
+import { Showvideo3Component } from './showvideo3/showvideo3.component';
+
+const routes: Routes = [
+  {
+    path: 'home', component: HomeComponent, children: [
+      { path: '', redirectTo: 'showvideo2', pathMatch: 'full' }, //預設顯示
+      { path: 'showvideo1', component: Showvideo1Component },
+      { path: 'showvideo2', component: Showvideo2Component },
+      { path: 'showvideo3', component: Showvideo3Component }
+    ]
+  }
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class HomeRoutingModule { }
+
+```
+
