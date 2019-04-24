@@ -28,7 +28,7 @@
             ],
             "styles": [
               "src/styles.scss",
-              "./node_modules/@nebular/theme/styles/prebuilt/default.scss" // or cosmic.scss
+              "node_modules/@nebular/theme/styles/prebuilt/default.scss" // or cosmic.scss
             ],
             "scripts": [],
             "es5BrowserSupport": true
