@@ -163,11 +163,11 @@ ng g c operation\op2
 ng g c operation\op3
 ```
 
-![2019-04-22_16_08_26](/pic/2019-04-22_16_08_26_Image.jpg)
+![2019-04-22_16_08_26](../pic/2019-04-22_16_08_26_Image.jpg)
 
 神奇的事情發生了，元件都註冊到**OperationModule**,而不是**AppModule**, 也就是說CLI在建立元綿時會時元件註冊到最近的模組內。
 
-![2019-04-22_16_12_48](/pic/2019-04-22_16_12_48_Image.jpg)
+![2019-04-22_16_12_48](../pic/2019-04-22_16_12_48_Image.jpg)
 
 打開`src\app\operation\operation.module.ts`可以看到3個元件確實都被註冊到**OperationModule**
 
@@ -235,7 +235,7 @@ export class AppRoutingModule { }
 
 執行後會出現Angular不認得**Opt1Component** 的警告
 
-![2019-04-22_16_32_48](/pic/2019-04-22_16_32_48_Image.jpg)
+![2019-04-22_16_32_48](../pic/2019-04-22_16_32_48_Image.jpg)
 
 再來我們將**Op1Component**所屬的模組(**OperationModule**)給註冊到**AppModule**內，重新執行就正常
 
@@ -275,7 +275,7 @@ export class AppModule { }
 
 假設**Page1Component**需要使用到**Op1Component**, 所以正常方式是將**Op1Component**的tag(`app-opt1`)加到`src\app\page1\page1.component.html`內執行結果，會發現Angular不認得`app-opt1`這個tag
 
-![2019-04-22_16_45_32](/pic/2019-04-22_16_45_32_Image.jpg)
+![2019-04-22_16_45_32](../pic/2019-04-22_16_45_32_Image.jpg)
 
 雖然**OperaionModule**已經註冊到**AppModule**內，但是透過Component tag方式來引用時仍然會出現錯誤。
 
@@ -550,7 +550,7 @@ export class CustomMaterialModule { }
 
 一般大部分功能性網站都會有如下圖一般，上方會有**header**區塊，側邊會有**aside**區塊，剩下最大區域研是呈現內容的**content**
 
-![2019-04-23_11_14_46](/pic/2019-04-23_11_14_46_Image.jpg)
+![2019-04-23_11_14_46](../pic/2019-04-23_11_14_46_Image.jpg)
 
 修改src\styles.scee，將p的樣式拿掉，避免影響。
 
@@ -587,7 +587,7 @@ ng g c home\header
 ng g c home\aside
 ```
 
-![2019-04-23_11_35_21](/pic/2019-04-23_11_35_21_Image.jpg)
+![2019-04-23_11_35_21](../pic/2019-04-23_11_35_21_Image.jpg)
 
 將**HomeModule**註冊到**AppModule**。
 
