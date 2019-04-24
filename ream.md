@@ -1133,5 +1133,79 @@ export class HomeModule { }
 <app-op2></app-op2>
 ```
 
+#### 加入video.js
 
+```
+npm install video.js
+```
+
+在angular.json的`styles`和`scripts`加入
+
+```json
+"styles": [
+ "./node_modules/video.js/dist/video-js.min.css",
+ "src/styles.scss"
+ ],
+"scripts": [
+ "./node_modules/video.js/dist/video.min.js"
+ ],
+```
+
+在要顯示的`html`和`ts`檔加入
+
+```html
+<video #myvid class="video-js vjs-big-play-centered mini-play" width="640" height="360" style="margin: auto;">
+  <source [src]="videoURL" type="video/mp4">
+</video>ht
+```
+
+```typescript
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+// 表示videojs的程式庫的宣告
+declare let videojs: any;
+
+@Component({
+  selector: 'app-op2',
+  templateUrl: './op2.component.html',
+  styleUrls: ['./op2.component.scss']
+})
+export class Op2Component implements  AfterViewInit {
+  // Instance video.js.
+  vidObj: any;
+  // 影片網址 
+  videoURL: string ="http://vjs.zencdn.net/v/oceans.mp4";
+  // 存取html上的標籤
+  @ViewChild('myvid') vid: ElementRef;
+  // 當html顯示
+  ngAfterViewInit(): void {
+    const options = {
+      controls: true,
+      autoplay: false,
+      preload: 'auto',
+      techOrder: ['html5']
+    };
+    this.vidObj = new videojs(this.vid.nativeElement, options, function onPlayerReady() {
+      videojs.log('Your player is ready!');
+    });
+  }
+}
+```
+
+播放mpeg-dash
+
+目前不能執行
+
+參考碼<https://stackblitz.com/edit/video-js-in-angular2>
+
+```
+npm install videojs-contrib-dash
+```
+
+
+
+### 加入dashjs
+
+```
+npm install dashjs
+```
 

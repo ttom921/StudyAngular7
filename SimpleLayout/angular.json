@@ -31,7 +31,10 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "./node_modules/video.js/dist/video.min.js"
+              "./node_modules/video.js/dist/video.min.js",
+              "./node_modules/videojs-contrib-dash/dist/videojs-dash.min.js",
+              "./node_modules/dashjs/dist/dash.all.min.js"
+            
             ],
             "es5BrowserSupport": true
           },
