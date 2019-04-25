@@ -52,6 +52,8 @@ const routes: Routes = [
 ];
 ```
 
+在按鈕或連結在使用上要加入父和子的路徑`routerLink="./misce/miscepage1"`
+
 在`src\app\app-routing.module.ts`的路由模組要修改如下
 
 ```typescript
@@ -118,4 +120,12 @@ const routes: Routes = [
   }
 ];
 ```
+
+當沒有顯示Icon時，可以重新下載
+
+```
+npm install ng-zorro-antd --save
+```
+
+
 
