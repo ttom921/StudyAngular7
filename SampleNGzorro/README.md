@@ -127,5 +127,121 @@ const routes: Routes = [
 npm install ng-zorro-antd --save
 ```
 
+### 加入drag&drop測試
 
+使用Angular Material來測試， 先安裝
+
+```
+npm install @angular/cdk
+npm install --save @types/node
+```
+
+修改`src\tsconfig.app.json`加入node
+
+```json
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "types": ["node"]
+  },
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts"
+  ]
+}
+```
+
+
+
+是使用API來完成Drag&Drop的功能，所以要加入*DragDropModule*到**MiscellaneousModule**
+
+```typescript
+import { DragDropModule } from '@angular/cdk/drag-drop';
+imports: [
+    
+    DragDropModule,
+   
+  ]
+```
+產生測試元件
+```
+ng g c miscellaneous\misceDragDrop
+```
+
+在雜項裏加入此測試元件
+
+產生track和tack的物件，用來追蹤移動的情況
+
+```
+ng g interface share/track
+```
+
+在`src\app\share\track.ts`加入物件
+
+```typescript
+export interface Track {
+    id: string;
+    title: string;
+}
+export interface Task {
+    id: string;
+    title: string;
+    description: string;
+}
+
+```
+
+在加入資料檔在`src\app\share\data.json`
+
+```json
+[
+    {
+        "title": "ToDo",
+        "id": "todo",
+        "task": [
+            {
+                "id": "task-001",
+                "title": "First Task",
+                "description": "This is my first task"
+            }
+        ]
+    },
+    {
+        "id": "In Progress",
+        "title": "Inprogress",
+        "task": [
+            {
+                "id": "task-002",
+                "title": "Second Task",
+                "description": "this my Second task"
+            }
+        ]
+    },
+    {
+        "title": "D-Done",
+        "id": "ddone",
+        "tasks": [
+            {
+                "id": "task-003",
+                "title": "Third Task",
+                "description": "This is my Third task"
+            }
+        ]
+    },
+    {
+        "title": "QA Pass",
+        "id": "qapass",
+        "tasks": [
+            {
+                "id": "task-004",
+                "title": "Four Task",
+                "description": "This is my Four task"
+            }
+        ]
+    }
+]
+```
+
+注意長度有設定不然會Drag&Drop會有問題
 

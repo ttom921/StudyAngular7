@@ -35,7 +35,9 @@
               "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
               "src/styles.scss"
             ],
-            "scripts": [],
+            "scripts": [
+              "./node_modules/hammerjs/hammer.min.js"
+            ],
             "es5BrowserSupport": true
           },
           "configurations": {
