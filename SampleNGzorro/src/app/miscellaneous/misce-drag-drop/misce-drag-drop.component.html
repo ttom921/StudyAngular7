@@ -6,7 +6,13 @@
 
     <div class="card-list-content" cdkDropList [id]="track.id" [cdkDropListData]="track.tasks"
       [cdkDropListConnectedTo]="trackIds" (cdkDropListDropped)="onTalkDrop($event)">
-        <mat-card *ngFor="let task of track.tasks" cdkDrag>
+
+      <nz-card  *ngFor="let task of track.tasks" cdkDrag>
+          <p>{{task.id}}</p>
+          <p>{{task.title}}</p>
+          <p>{{task.description}}</p>
+      </nz-card>
+        <!-- <mat-card *ngFor="let task of track.tasks" cdkDrag>
           <mat-card-header>{{task.id}}</mat-card-header>
          
           <mat-card-content>
@@ -14,7 +20,7 @@
               {{task.title}}
               <div *ngIf="author">{{task.description}}</div>
           </mat-card-content>
-        </mat-card> 
+        </mat-card>  -->
 
     </div>
 

@@ -8,12 +8,14 @@ import { Miscepage1Component } from './miscepage1/miscepage1.component';
 import { Miscepage2Component } from './miscepage2/miscepage2.component';
 import { MisceDragDropComponent } from './misce-drag-drop/misce-drag-drop.component';
 import { MatCardModule } from '@angular/material';
+import { NzCardModule } from 'ng-zorro-antd';
 
 @NgModule({
   declarations: [MiscellaneousComponent, Miscepage1Component, Miscepage2Component, MisceDragDropComponent],
   imports: [
     CommonModule,
     MatCardModule,
+    NzCardModule,
     MiscellaneousRoutingModule,
     DragDropModule
   ]
