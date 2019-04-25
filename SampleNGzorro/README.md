@@ -45,10 +45,26 @@ const routes: Routes = [
 
 在`src\app\app-routing.module.ts`的路由模組要修改如下
 
-```
+```typescript
 const routes: Routes = [
   {path:'',redirectTo:'misce',pathMatch:'full'},
   {path:'misce',component:MiscellaneousComponent}
+];
+```
+
+#### 建立page404元件
+
+```
+ng g c page404
+```
+
+在src\app\app-routing.module.ts的路由加入
+
+```typescript
+const routes: Routes = [
+  {path:'',redirectTo:'misce',pathMatch:'full'},
+  {path:'misce',component:MiscellaneousComponent},
+  {path:'404',component:Page404Component}
 ];
 ```
 

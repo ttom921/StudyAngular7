@@ -11,6 +11,7 @@ import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { BaselayoutComponent } from './layout/baselayout/baselayout.component';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
+import { Page404Component } from './page404/page404.component';
 
 registerLocaleData(zh);
 
@@ -18,6 +19,7 @@ registerLocaleData(zh);
   declarations: [
     AppComponent,
     BaselayoutComponent,
+    Page404Component,
   ],
   imports: [
     BrowserModule,
