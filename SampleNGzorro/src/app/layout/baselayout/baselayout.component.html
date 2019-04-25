@@ -3,11 +3,11 @@
     <div class="logo"></div>
     <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
       <li nz-submenu>
-        <span title><i nz-icon type="user"></i><span class="nav-text">User</span></span>
+        <span title><i nz-icon type="user"></i><span class="nav-text">Home</span></span>
         <ul>
-          <li nz-menu-item routerLink="/misce">Tom</li>
-          <li nz-menu-item>Bill</li>
-          <li nz-menu-item>Alex</li>
+          <li nz-menu-item routerLink="./home/page1">Page1</li>
+          <li nz-menu-item routerLink="./home/page2">Page2</li>
+          <li nz-menu-item routerLink="./home/page3">Page3</li>
         </ul>
       </li>
       <li nz-submenu>

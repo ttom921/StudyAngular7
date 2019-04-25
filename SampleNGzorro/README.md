@@ -21,6 +21,15 @@ ng g m miscellaneous --routing
 ng g c miscellaneous\miscellaneous --flat
 ```
 
+在`src\app\miscellaneous\miscellaneous.component.html`的檔案加入'router-outlet'標籤不然不會顯示
+
+```html
+<p>
+  miscellaneous works!
+</p>
+<router-outlet></router-outlet>
+```
+
 在miscellaneous模組建立兩個組件
 
 ```
@@ -68,5 +77,45 @@ const routes: Routes = [
 ];
 ```
 
+####　建立Home模組
 
+```
+ng g m home --routing
+ng g c home\home --flat
+```
+
+在`src\app\home\home.component.html`的檔案加入`router-outlet`標籤不然不會顯示
+
+```html
+<p>
+  home works!
+</p>
+<router-outlet></router-outlet>
+```
+
+
+
+在建立三個元件
+
+```
+ng g c home\page1
+ng g c home\page2
+ng g c home\page3
+```
+
+在`src\app\app.module.ts`要將**HomeModule**模組加入
+
+在`src\app\home\home-routing.module.ts`的路由要修改如下
+
+```typescript
+const routes: Routes = [
+  {
+    path: 'home', component: HomeComponent, children: [
+      { path: 'page1', component: Page1Component },
+      { path: 'page2', component: Page2Component },
+      { path: 'page3', component: Page3Component }
+    ]
+  }
+];
+```
 

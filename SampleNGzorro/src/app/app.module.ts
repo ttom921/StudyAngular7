@@ -12,6 +12,7 @@ import zh from '@angular/common/locales/zh';
 import { BaselayoutComponent } from './layout/baselayout/baselayout.component';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { Page404Component } from './page404/page404.component';
+import { HomeModule } from './home/home.module';
 
 registerLocaleData(zh);
 
@@ -28,6 +29,7 @@ registerLocaleData(zh);
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    HomeModule,
     MiscellaneousModule
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_TW }],
