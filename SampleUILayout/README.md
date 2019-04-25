@@ -38,6 +38,7 @@ cd SampleUILayout
 ```
 npm install --save @nebular/theme @angular/cdk @angular/animations
 npm install --save @nebular/auth @nebular/security
+npm install --save nebular-icons
 ```
 
 設定nebular的模組在`src\app\app.module.ts`下
@@ -87,7 +88,7 @@ ng g m pages --routing
 
 ```
 ng g c pages\pages --flat
-ng g c pages\pages --flat
+
 ```
 
 先將路由連接起來
@@ -260,5 +261,127 @@ npm i @nebular/bootstrap bootstrap
               "node_modules/@nebular/bootstrap/styles/prebuilt/corporate.scss",
               "src/app/@theme/styles/styles.scss"
             ]
+```
+
+### 加入menuitem
+
+先要加入**NbMenuModule**和**BrowserAnimationsModule**到`src\app\app.module.ts`中
+
+```typescript
+//...
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgModule } from '@angular/core';
+//...
+import { NbThemeModule,NbMenuModule } from '@nebular/theme';
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    // ...
+    BrowserAnimationsModule,
+    // ...
+    NbMenuModule.forRoot(),
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+```
+
+在pages的資料夾下建立`pages-menu.ts`加入要顯示的menu item
+
+```typescript
+import { NbMenuItem } from '@nebular/theme';
+
+export const MENU_ITEMS: NbMenuItem[]=[
+    {
+        title:'E-commerce',
+        icon:'nb-e-commerce',
+        link:'#',
+        home:true,
+    },
+    {
+        title:'Miscellaneous',
+        icon:'nb-shuffle',
+        children: [
+            {
+                title: '404',
+                link: '#'
+            }
+        ]
+    }
+];
+```
+
+在**PagesModule**中加入使用menu的模組
+
+```typescript
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { NbSidebarModule, NbLayoutModule, NbSidebarService,NbMenuModule } from '@nebular/theme';
+
+import { PagesRoutingModule } from './pages-routing.module';
+import { PagesComponent } from './pages.component';
+
+@NgModule({
+  declarations: [PagesComponent],
+  imports: [
+    CommonModule,
+    PagesRoutingModule,
+    NbLayoutModule,
+    NbSidebarModule,
+    NbMenuModule, // menu 模組
+  ],
+  providers:[NbSidebarService]
+})
+export class PagesModule { }
+
+```
+
+在`src\app\pages\pages.component.ts`中加入MENU_ITEMS
+
+```typescript
+import { Component, OnInit } from '@angular/core';
+import { MENU_ITEMS } from './pages-menu'; //加入
+
+@Component({
+  selector: 'app-pages',
+  templateUrl: './pages.component.html',
+  styleUrls: ['./pages.component.scss']
+})
+export class PagesComponent implements OnInit {
+  menu= MENU_ITEMS; // 指定
+  constructor() { }
+ 
+  ngOnInit() {
+  }
+
+}
+
+```
+
+在html檔`src\app\pages\pages.component.html`設定` <nb-sidebar><nb-menu [items]="menu" ></nb-menu></nb-sidebar>`
+
+```html
+<nb-layout>
+  <nb-layout-header fixed>Company Name</nb-layout-header>
+
+  <nb-sidebar><nb-menu [items]="menu" ></nb-menu></nb-sidebar>
+
+  <nb-layout-column>Page Content</nb-layout-column>
+</nb-layout>
+```
+
+加入miscellaneous
+
+```
+ng g m pages\miscellaneous --routing
+ng g c pages\miscellaneous\miscellaneous --flat
+ng g c pages\miscellaneous\NotFound
+
 ```
 

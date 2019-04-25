@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { NbSidebarModule, NbLayoutModule, NbSidebarService } from '@nebular/theme';
+import { NbSidebarModule, NbLayoutModule, NbSidebarService,NbMenuModule } from '@nebular/theme';
 
 import { PagesRoutingModule } from './pages-routing.module';
 import { PagesComponent } from './pages.component';
+//import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 
 @NgModule({
   declarations: [PagesComponent],
@@ -13,6 +14,8 @@ import { PagesComponent } from './pages.component';
     PagesRoutingModule,
     NbLayoutModule,
     NbSidebarModule,
+    NbMenuModule,
+    //MiscellaneousModule,
   ],
   providers:[NbSidebarService]
 })
