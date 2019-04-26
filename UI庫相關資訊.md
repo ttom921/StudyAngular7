@@ -45,7 +45,16 @@ https://github.com/CreativeIT/material-angular-dashboard
 
 ### Drag&Drap的參考程式
 
+<https://swimlane.github.io/ngx-dnd/#/builder#builder-demo>
+
+<https://stackblitz.com/edit/swimlane-ngx-dnd-sortables?file=src%2Fstyles.css>
+
+
+
 <https://alligator.io/angular/drag-drop/>
 
+###　有關gridlayout drag
+[Drag and drop grid layout for angular2](https://stackoverflow.com/questions/39558995/drag-and-drop-grid-layout-for-angular2)
 
+https://tiberiuzuld.github.io/angular-gridster2/
 

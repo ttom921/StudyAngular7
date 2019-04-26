@@ -1,0 +1,69 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <h1>
+    domo D&D {{title}}
+  </h1>
+</div>
+<!-- <ngx-dnd-container
+  [model]="orderableList">
+</ngx-dnd-container>
+<code><pre>orderableList = {{orderableList | json}}</pre></code>
+<hr/> -->
+<hr />
+<h3>No Model</h3>
+<div class="ngx-dnd-container" ngxDroppable>
+  <div class="ngx-dnd-item" ngxDraggable>Item 1</div>
+  <div class="ngx-dnd-item" ngxDraggable>Item 2</div>
+  <div class="ngx-dnd-item" ngxDraggable>Item 3</div>
+</div>
+<hr />
+<!-- <h3>Drag Handle</h3>
+<div class="ngx-dnd-container" ngxDroppable>
+  <div class="ngx-dnd-item" ngxDraggable>
+    <i class="fa fa-ellipsis-v" aria-hidden="true" ngxDragHandle></i>
+    Item 1
+  </div>
+  <div class="ngx-dnd-item" ngxDraggable>
+    <i class="fa fa-ellipsis-v" aria-hidden="true" ngxDragHandle></i>
+    Item 2
+  </div>
+  <div class="ngx-dnd-item" ngxDraggable>
+    <i class="fa fa-ellipsis-v" aria-hidden="true" ngxDragHandle></i>
+    Item 3
+  </div>
+</div> -->
+<h3>Restricted</h3>
+<div class="ngx-dnd-container" ngxDroppable>
+    <div class="ngx-dnd-item" ngxDraggable="['restricted-target']">Item 1a</div>
+    <div class="ngx-dnd-item" ngxDraggable="['restricted-target']">Item 2a</div>
+    <div class="ngx-dnd-item" ngxDraggable="['restricted-target']">Item 3a</div>
+  </div>
+  <div class="ngx-dnd-container" ngxDroppable="restricted-target">
+    <div class="ngx-dnd-item" ngxDraggable>Item 1b</div>
+    <div class="ngx-dnd-item" ngxDraggable>Item 2b</div>
+    <div class="ngx-dnd-item" ngxDraggable>Item 3b</div>
+  </div>
+
+<hr />
+
+<h3>from model</h3>
+<!-- <pre>{{title}}</pre> -->
+
+
+<div class="ngx-dnd-container" ngxDroppable [model]="orderableList" (drop)="dropped($event)" >
+  <div class="ngx-dnd-item" ngxDraggable *ngFor="let item of orderableList" [model]="item">
+    {{item}}
+  </div>
+</div>
+<code><pre>orderableList = {{orderableList | json}}</pre></code>
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/> 
