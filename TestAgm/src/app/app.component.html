@@ -1,0 +1,24 @@
+<h3>{{title}}</h3>
+<agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoomValue" (mapClick)="addMarker($event.coords.lat, $event.coords.lng)">
+  <!-- <agm-data-layer [geoJson]="geoJson"></agm-data-layer> -->
+  <agm-marker [latitude]="lat" [longitude]="lng" [iconUrl]="iconUrl" (markerClick)="markerClick($event)">
+    <agm-info-window [latitude]="lat+0.0005">
+      <h5>這是測試點</h5>
+      <p>就在公司的附近</p>
+    </agm-info-window>
+  </agm-marker>
+  <agm-circle [latitude]="lat" [longitude]="lng" [radius]="radius" [fillColor]="fillColor"></agm-circle>
+  <!-- <agm-polyline>
+      <agm-polyline-point [latitude]="24.931071" [longitude]="121.267613">
+      </agm-polyline-point>
+      <agm-polyline-point [latitude]="24.933065" [longitude]="121.267742">
+      </agm-polyline-point>
+  </agm-polyline> -->
+   <agm-polyline [strokeColor]="fillColor" >
+    <agm-polyline-point *ngFor="let item of Carrouters" [latitude]="item.lat" [longitude]="item.lng" ></agm-polyline-point>
+  </agm-polyline> 
+
+</agm-map>
+<!-- <code>
+    {{Carrouters | json}}
+</code> -->
